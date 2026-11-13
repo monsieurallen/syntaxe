@@ -35,6 +35,17 @@ const FONCTIONS = [
 const PRONOMS_SUJET = ["Il", "Elle", "Ils", "Elles"];
 const FORMES_DORMIR = ["dors", "dort", "dormons", "dormez", "dorment"];
 
+// Fonction utilitaire pour gérer la casse (conserve les majuscules des noms propres)
+const formaterMot = (texte, estLePremierMot) => {
+  const net = texte.replace(/[.,]$/, "");
+  if (!net) return "";
+  if (estLePremierMot) {
+    return net.charAt(0).toUpperCase() + net.slice(1);
+  }
+  const estMajusculeOriginale = net.charAt(0) === net.charAt(0).toUpperCase() && net.charAt(0) !== net.charAt(0).toLowerCase();
+  return estMajusculeOriginale ? net : net.toLowerCase();
+};
+
 function SortableElement({ id, item, mode, selectionnes, toggleSelection, config, setManipulation, menuActif, setMenuActif, supprimerGroupe, changerClasseMots }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ 
     id: id,
@@ -44,8 +55,7 @@ function SortableElement({ id, item, mode, selectionnes, toggleSelection, config
   const style = { transform: CSS.Transform.toString(transform), transition, zIndex: isDragging ? 100 : 1, touchAction: 'none' };
 
   if (item.type === 'mot') {
-    const txt = item.data.texte.toLowerCase().replace(/[.,]$/, "");
-    const affiche = config.maj ? txt.charAt(0).toUpperCase() + txt.slice(1) : txt;
+    const affiche = formaterMot(item.data.texte, config.maj);
     const classeIdx = item.data.classeIndex || 0;
 
     return (
@@ -97,9 +107,9 @@ function SortableElement({ id, item, mode, selectionnes, toggleSelection, config
         {config.virguleAvant && <span className="text-2xl font-black mr-1">,</span>}
         <div className="flex gap-2">
             {item.data.motsDuGroupe.map((mot, idx) => {
-              const textePur = mot.texte.toLowerCase().replace(/[.,]$/, "");
               const doitEtreMaj = config.majMots && idx === 0 && !(m === 'singulier' || m === 'pluriel');
-              return <div key={mot.id} className="px-4 py-3 bg-white rounded-xl border-b-2 border-slate-200 text-2xl font-bold">{doitEtreMaj ? textePur.charAt(0).toUpperCase() + textePur.slice(1) : textePur}</div>;
+              const motFormate = formaterMot(mot.texte, doitEtreMaj);
+              return <div key={mot.id} className="px-4 py-3 bg-white rounded-xl border-b-2 border-slate-200 text-2xl font-bold">{motFormate}</div>;
             })}
         </div>
         {config.virguleApres && <span className="text-2xl font-black ml-1">,</span>}

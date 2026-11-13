@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/postcss'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/syntaxe/', // <--- C'est cette ligne magique qui manquait pour pointer vers le bon dossier sur GitHub Pages
+  base: './', // <--- Change juste '/syntaxe/' par './' pour forcer des chemins relatifs robustes
   css: {
     postcss: {
       plugins: [tailwindcss()],

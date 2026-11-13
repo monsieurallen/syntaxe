@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/postcss'
 
 export default defineConfig({
   plugins: [react()],
-  base: './', // <--- Change juste '/syntaxe/' par './' pour forcer des chemins relatifs robustes
+  base: '/syntaxe/',
   css: {
     postcss: {
       plugins: [tailwindcss()],

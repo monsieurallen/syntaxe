@@ -162,7 +162,7 @@ export default function App() {
     })));
     setGroupes([]); 
     setSelectionnes([]);
-    setMenuActif({ id: null }); // IMPORTANT : On vide le menu actif
+    setMenuActif({ id: null });
   };
 
   const handleMouseDown = (e) => {
